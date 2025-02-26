@@ -1,9 +1,46 @@
+window.onload = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const authCode = urlParams.get('code');
+  const accessToken = localStorage.getItem('accessToken');
+  if (authCode && !accessToken) { // Solo intercambia el código si no hay un token ya almacenado
+    fetch('http://127.0.0.1:3000/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: authCode }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success && data.token?.access_token) {
+          const accessToken = data.token.access_token;
+          localStorage.setItem('accessToken', accessToken);
+          sessionStorage.setItem('accessToken', accessToken);
+          // Limpiar el código de la URL
+          window.history.replaceState({}, document.title, window.location.pathname);
+          console.log('Token guardado:', accessToken);
+          document.getElementById('login-page')!.style.display = 'none';
+          document.getElementById('home-page')!.style.display = 'block';
+        } else {
+          alert('Error al iniciar sesión');
+        }
+      })
+      .catch(error => {
+        console.error('Error de autenticación:', error);
+        alert('Hubo un error durante la autenticación.');
+      });
+  } else if (accessToken) { // Si ya hay un token, mostrar directamente el contenido
+    console.log('Sesión ya iniciada con token:', accessToken);
+    document.getElementById('login-page')!.style.display = 'none';
+    document.getElementById('home-page')!.style.display = 'block';
+  }
+};
+
 document.getElementById('login-button')?.addEventListener('click', () => {
-  // Obtener la URL de autorización desde el backend
+
   fetch('http://127.0.0.1:3000/api/auth-url')
     .then(response => response.json())
     .then(data => {
-      window.location.href = data.url;  // Redirigir al usuario a la página de autorización
+      const authUrl = `${data.url}&prompt=login`;
+      window.location.href = authUrl;
     })
     .catch(error => {
       console.error('Error al obtener la URL de autorización:', error);
@@ -11,32 +48,20 @@ document.getElementById('login-button')?.addEventListener('click', () => {
     });
 });
 
-window.onload = () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const authCode = urlParams.get('code');
-  
-  if (authCode) {
-    // Enviar el código de autorización al backend para obtener el access token
-    fetch('http://127.0.0.1:3000/api/auth', {  // Asegúrate de que la URL sea correcta
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ code: authCode }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        // Si la autenticación fue exitosa, muestra la página de inicio
-        document.getElementById('login-page')!.style.display = 'none';
-        document.getElementById('home-page')!.style.display = 'block';
-      } else {
-        alert('Error al iniciar sesión');
-      }
-    })
-    .catch(error => {
-      console.error('Error de autenticación:', error);
-      alert('Hubo un error durante la autenticación.');
-    });
-  }
-};
+document.getElementById('logout-button')?.addEventListener('click', () => {
+
+  // Limpiar cookies, localStorage y sessionStorage
+  localStorage.removeItem("accessToken");
+  sessionStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+
+  // Limpiar parámetros en la URL
+  const url = new URL(window.location.href);
+  url.searchParams.delete('code');
+  window.history.replaceState({}, '', url);
+
+
+  // Mostrar pantalla de login
+  document.getElementById('login-page')!.style.display = 'block';
+  document.getElementById('home-page')!.style.display = 'none';
+});
