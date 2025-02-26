@@ -61,15 +61,17 @@ server.post('/api/auth', async (req, res) => {
         client_id: process.env.CLIENT_ID,
         client_secret: process.env.CLIENT_SECRET,
         code,
-        redirect_uri: 'http://localhost:3000/callback',
+        redirect_uri: 'http://127.0.0.1:5500/frontend/public/index.html',
       }),
     });
     const data = await response.json();
-    if (data.access_token) {
-      res.send({ success: true, token: data });
-    } else {
-      res.status(400).send({ success: false, error: data.error_description || 'Error al obtener el token' });
-    }
+    // Actualiza la respuesta de la API para que solo se envíe el token
+if (data.access_token) {
+  res.send({ success: true, token: { access_token: data.access_token } }); // Solo el token
+} else {
+  res.status(400).send({ success: false, error: data.error_description || 'Error al obtener el token' });
+}
+
   } catch (err) {
     console.error('Error al obtener el token:', err);
     res.status(500).send({ success: false, error: 'Error interno del servidor' });
