@@ -1,11 +1,10 @@
-# Se encarga del front y el back a la vez, cuando se agregue dockerfile
-# se tendra que separar en contenedores
+# Separar al dockerizar, en contenedores front y back
 
 all:
 	if [ ! -d "node_modules" ]; then \
 		npm install; \
 	fi
-	cd backend && npx tsc -p tsconfig.backend.json && \ 
+	cd backend && npx tsc -p tsconfig.backend.json && \
 	cd .. && \
 	cd frontend && npx tsc -p tsconfig.frontend.json && \
 	cd .. && \
