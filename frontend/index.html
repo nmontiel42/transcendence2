@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login SPA</title>
+  <link rel="stylesheet" href="../../dist/frontend/output.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-black min-h-screen overflow-hidden">
+  <div class="scanlines"></div>
+
+  <!-- INICIO DE SESION -->
+
+  <div id="login-page" class="block">
+    <div id="logo" class="mb-5 relative">
+      <div class="logo-text">PONG</div>
+    </div>
+
+    <div id="pong-graphic" class="flex justify-center items-center my-6 relative">
+      <div id="paddle1" class="w-[10px] h-[40px] bg-[#BE36CD] shadow-[0_0_10px_#BE36CD]"></div>
+      <div id="ball" class="w-[10px] h-[10px] bg-[#D2D2EA] rounded-full mx-[20px] shadow-[0_0_10px_#D2D2EA] relative"></div>
+      <div id="paddle2" class="w-[10px] h-[40px] bg-[#BE36CD] shadow-[0_0_10px_#BE36CD]"></div>
+    </div>
+
+    <h1 id="neon-text" class="uppercase bg-gradient-to-r from-[#318ED6] via-[#D2D2EA] to-[#BE36CD] text-transparent bg-clip-text text-shadow-[0_0_10px_rgba(190,54,205,.8),0_0_20px_rgba(96,12,126,.6),0_0_30px_rgba(49,142,214,.4)]">Bienvenido al <br>mundo arcade</h1>
+    <h3 id="neon-subtitle" class="text-[10px] mt-5 mb-7 text-[#D2D2EA] text-shadow-[0_0_5px_#318ED6] tracking-wider">INICIA SESION PARA JUGAR</h3>
+
+    <button id="login-button">
+      PULSA PARA EMPEZAR
+    </button>
+
+    <div id="language-buttons" class="flex justify-center mt-7 gap-4">
+      <button id="esBtn" class="lan-btn">ES</button>
+      <button id="enBtn" class="lan-btn">EN</button>
+      <button id="frBtn" class="lan-btn">FR</button>
+    </div>
+
+    <div id="version-text" class="absolute bottom-2 right-4 text-[8px] text-[rgba(210,210,234,0.5)] shadow-[0_0_2px_rgba(49,142,214,.3)]">
+      v27.2.2025
+    </div>
+    
+  </div>
+
+  <!-- HOME -->
+
+  <div id="home-page" class="hidden">
+    <h1 id="welcome">Bienvenido a la página de inicio</h1>
+    <button id="logout-button">Cerrar sesión</button>
+  </div>
+
+  <script src="../../dist/frontend/output.js"></script>
+</body>
+</html>

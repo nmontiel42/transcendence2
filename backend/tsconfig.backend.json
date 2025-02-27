@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "module": "commonjs",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "outDir": "../dist/backend",  // Directorio de salida para los archivos compilados del backend
+      "resolveJsonModule": true,
+      "noImplicitAny": false,   // Si no quieres errores con tipos implícitos en el backend
+      "moduleResolution": "node",
+      "allowJs": true
+    },
+    "include": [
+      "*.ts"
+    ],
+    "exclude": [
+      "frontend/**/*"
+    ]
+  }
+  

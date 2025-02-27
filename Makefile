@@ -1,20 +1,29 @@
-# Al ejecutar `make`, verifica si node_modules existe en cada parte del proyecto.
-# Si no están, los instala. Luego, ejecuta los comandos necesarios.
+# Se encarga del front y el back a la vez, cuando se agregue dockerfile
+# se tendra que separar en contenedores
 
-all: install
+all:
+	if [ ! -d "node_modules" ]; then \
+		npm install; \
+	fi
+	cd backend && npx tsc -p tsconfig.backend.json && \ 
+	cd .. && \
+	cd frontend && npx tsc -p tsconfig.frontend.json && \
+	cd .. && \
+	npx @tailwindcss/cli -i ./frontend/style.css -o ./dist/frontend/output.css && \
 	npm start
 
-install:
-	@test -d node_modules || npm install
-	@test -d backend/node_modules || (cd backend && npm install)
-	@test -d frontend/node_modules || (cd frontend && npm install)
+c:
+	cd backend & npx tsc -p tsconfig.backend.json
+	cd frontend & npx tsc -p tsconfig.frontend.json
 
-com: 
-	npx tsc
+s:
+	npm start
 
-# Limpiar la carpeta dist
+m:
+	npx @tailwindcss/cli -i ./frontend/style.css -o ./dist/frontend/output.css --watch
+
 clean:
 	rm -rf dist
 
 # Para evitar conflictos con archivos que se llamen igual que los comandos
-.PHONY: clean all install
+.PHONY: clean all m s

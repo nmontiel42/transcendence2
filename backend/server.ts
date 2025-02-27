@@ -8,10 +8,6 @@ config();
 
 const server = Fastify();
 
-const CLIENT_ID = process.env.CLIENT_ID!;
-const CLIENT_SECRET = process.env.CLIENT_SECRET!;
-const REDIRECT_URI = process.env.REDIRECT_URI!;
-
 // Habilitar CORS
 server.register(fastifyCors);
 
@@ -25,8 +21,9 @@ server.get('/api/auth-url', async (request, reply) => {
   reply.send({ url: AUTH_URL });
 });
 
+// Obtener la información del usuario
 
-server.get('/api/user-info', async (request, reply) => {
+/* server.get('/api/user-info', async (request, reply) => {
   const { token } = request.query as { token: string };
 
   if (!token)
@@ -44,7 +41,7 @@ server.get('/api/user-info', async (request, reply) => {
     console.error('Error al obtener el usuario:', error);
     return reply.status(500).send({ success: false, error: 'Error al obtener la información del usuario' });
   }
-});
+}); */
 
 // Ruta para manejar la autenticación
 server.post('/api/auth', async (req, res) => {
@@ -61,7 +58,7 @@ server.post('/api/auth', async (req, res) => {
         client_id: process.env.CLIENT_ID,
         client_secret: process.env.CLIENT_SECRET,
         code,
-        redirect_uri: 'http://127.0.0.1:5500/frontend/public/index.html',
+        redirect_uri: 'http://127.0.0.1:5500/frontend/index.html',
       }),
     });
     const data = await response.json();
